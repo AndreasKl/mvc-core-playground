@@ -1,0 +1,20 @@
+@model Notes.Controllers.NotesController.NoteViewModel
+<form id="delete-@Model.ID" asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.ID" />
+</form>
+<div class="container">
+    <div class="row align-items-start">
+        <div class="col">
+            <p>@Model.Type</p>
+        </div>
+        <div class="col">
+            <h3>@Model.Title</h3>
+        </div>
+        <div class="col">
+            <p>@Model.Description</p>
+        </div>
+        <div class="col text-end">
+            <button form="delete-@Model.ID" type="submit" class="btn-close" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
