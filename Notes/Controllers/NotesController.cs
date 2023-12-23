@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Notes.Persistence;
@@ -21,6 +22,7 @@ public class NotesController(NotesContext notesContext) : Controller
     public record NoteTypeViewModel(Guid ID, string Name);
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         return View(
@@ -32,6 +34,7 @@ public class NotesController(NotesContext notesContext) : Controller
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Index([FromForm] AddNoteForm form)
     {
         if (!ModelState.IsValid)
