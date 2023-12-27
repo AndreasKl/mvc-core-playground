@@ -12,6 +12,7 @@ internal class Program
             "notes.db"
         );
         var connectionString = $"Data Source={notesDbPath}";
+        Console.WriteLine($"Using database at {notesDbPath}");
 
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllersWithViews();

@@ -3,6 +3,7 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,17 @@ namespace Notes.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            ILogger<LoginModel> logger
+        )
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -89,7 +96,9 @@ namespace Notes.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (
+                await _signInManager.GetExternalAuthenticationSchemesAsync()
+            ).ToList();
 
             ReturnUrl = returnUrl;
         }
@@ -98,21 +107,34 @@ namespace Notes.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (
+                await _signInManager.GetExternalAuthenticationSchemesAsync()
+            ).ToList();
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(
+                    Input.Email,
+                    Input.Password,
+                    Input.RememberMe,
+                    lockoutOnFailure: false
+                );
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.GetUserAsync(User);
+                    await UpdateClaim(user, "fullName", user.NormalizedUserName);
+                    await UpdateClaim(user, "loginTime", DateTime.Now.ToString());
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage(
+                        "./LoginWith2fa",
+                        new { ReturnUrl = returnUrl, Input.RememberMe }
+                    );
                 }
                 if (result.IsLockedOut)
                 {
@@ -128,6 +150,16 @@ namespace Notes.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task UpdateClaim(IdentityUser user, string type, string value)
+        {
+            if (user == null)
+                throw new ArgumentException(null, nameof(user));
+
+            if (User.Claims.Any(c => c.Type == type))
+                await _userManager.RemoveClaimsAsync(user, User.Claims.Where(c => c.Type == type));
+            await _userManager.AddClaimAsync(user, new Claim(type, value));
         }
     }
 }
