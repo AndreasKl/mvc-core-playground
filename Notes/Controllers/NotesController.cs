@@ -43,8 +43,16 @@ public class NotesController(NotesContext notesContext) : Controller
             return View(new NotesViewModel(await FetchNotes(), clone));
         }
 
+        var noteType =
+            await notesContext.NoteTypes.FindAsync(form.NoteTypeID!.Value)
+            ?? throw new InvalidOperationException("Note type not found");
         await notesContext.Notes.AddAsync(
-            new Note { Description = form.Description!, Title = form.Title!, TypeID = form.NoteTypeID!.Value }
+            new Note
+            {
+                Description = form.Description!,
+                Title = form.Title!,
+                Type = noteType
+            }
         );
         await notesContext.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IHtmlLocalizer<Resources> SharedLocalizer
+
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8" />
@@ -17,7 +19,7 @@
 
     <footer class="footer text-muted text-center mt-3">
         <div class="container">
-            Made with ☕ in Bonn!
+            @SharedLocalizer["Made in Bonn."]
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Notes.Areas.Identity.Data;
 using Notes.Persistence;
@@ -18,6 +19,11 @@ internal class Program
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<NotesContext>(o => o.UseSqlite(connectionString));
         builder.Services.AddDbContext<NotesIdentityDbContext>(o => o.UseSqlite(connectionString));
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+        builder
+            .Services.AddMvc()
+            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+            .AddDataAnnotationsLocalization();
 
         builder
             .Services.AddDefaultIdentity<IdentityUser>(options =>

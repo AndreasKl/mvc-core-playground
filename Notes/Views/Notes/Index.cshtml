@@ -1,6 +1,8 @@
 ﻿@model Notes.Controllers.NotesController.NotesViewModel
+@inject IHtmlLocalizer<Resources> SharedLocalizer
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = SharedLocalizer["ApplicationTitle"];
 }
 
 <div class="mt-4">
