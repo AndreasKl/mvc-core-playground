@@ -9,7 +9,7 @@ namespace HelloMVCCore;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +34,7 @@ public class Program
                 o.Stores.MaxLengthForKeys = 128;
                 o.SignIn.RequireConfirmedAccount = true;
             })
+            .AddRoles<IdentityRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -51,6 +52,19 @@ public class Program
         });
         
         var app = builder.Build();
+
+
+        using (var scope = app.Services.CreateScope())
+        {
+            // Add roles for luulz
+            var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            if (!roleManager.Roles.Any())
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole("User"));
+                await roleManager.CreateAsync(new IdentityRole("Guest"));
+            }
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -76,7 +90,7 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
         app.MapRazorPages();
-
+        
         app.Run();
     }
 }

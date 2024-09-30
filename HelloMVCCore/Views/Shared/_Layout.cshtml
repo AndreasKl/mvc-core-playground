@@ -39,6 +39,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
+        @await Component.InvokeAsync("UserNameComponent")
         &copy; 2024 - HelloMVCCore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
