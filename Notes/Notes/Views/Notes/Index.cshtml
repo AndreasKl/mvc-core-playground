@@ -1,0 +1,17 @@
+﻿@model Notes.Controllers.NotesController.NotesViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="mt-4">
+    <h1 class="text-center">underNotes</h1>
+    <div class="mt-4">
+        @foreach (var note in Model.Notes)
+        {
+            @await Html.PartialAsync("_Note", note)
+        }
+    </div>
+    <div class="mt-4">
+        @await Html.PartialAsync("_Form", Model.AddNoteForm)
+    </div>
+</div>
