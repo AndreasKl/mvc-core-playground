@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HelloMVCCore.Data;
+using HelloMVCCore.Infrastructure;
 using HelloMVCCore.Infrastructure.MVC;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace HelloMVCCore;
 
@@ -44,6 +46,12 @@ public class Program
             options.Wtrealm = builder.Configuration["wsfed:realm"];
             options.MetadataAddress = builder.Configuration["wsfed:metadata"];
             options.AllowUnsolicitedLogins = false;
+        });
+
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("SomePolicy", policyBuilder => policyBuilder.Requirements.Add(new SomeAuthorizationRequirement()));
+            
         });
 
         builder.Services.AddControllersWithViews(options =>

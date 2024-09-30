@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using HelloMVCCore.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using HelloMVCCore.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HelloMVCCore.Controllers;
 
@@ -18,6 +20,7 @@ public class HomeController : Controller
         return View(new SampleViewModel(FirstName: "Andreas", LastName: "Kluth"));
     }
 
+    [Authorize(Roles = "User", Policy = "SomePolicy")]
     public IActionResult Privacy()
     {
         return View();
