@@ -6,7 +6,6 @@ namespace HelloMVCCore;
 [HtmlTargetElement("ajax-anchor", Attributes = LabelAttributeName)]
 public class AjaxAnchorTagHelper(ILogger<AjaxAnchorTagHelper> logger) : TagHelper
 {
-    private readonly ILogger<AjaxAnchorTagHelper> _logger = logger;
     private const string LabelAttributeName = "label";
 
     [HtmlAttributeName("label")]
