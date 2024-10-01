@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using HelloMVCCore.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using HelloMVCCore.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HelloMVCCore.Controllers;
 
@@ -29,6 +29,8 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(
+            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
+        );
     }
 }

@@ -2,9 +2,14 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HelloMVCCore.Infrastructure;
 
-public class SomeAuthorizationRequirement : AuthorizationHandler<SomeAuthorizationRequirement>, IAuthorizationRequirement
+public class SomeAuthorizationRequirement
+    : AuthorizationHandler<SomeAuthorizationRequirement>,
+        IAuthorizationRequirement
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SomeAuthorizationRequirement requirement)
+    protected override Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        SomeAuthorizationRequirement requirement
+    )
     {
         if (context.User != null)
         {

@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HelloMVCCore.Areas.Identity.Pages.Account
 {
-    public class LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
-        : PageModel
+    public class LoginModel(
+        SignInManager<ApplicationUser> signInManager,
+        ILogger<LoginModel> logger
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -95,7 +97,12 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await signInManager.PasswordSignInAsync(
+                    Input.Email,
+                    Input.Password,
+                    Input.RememberMe,
+                    lockoutOnFailure: false
+                );
                 if (result.Succeeded)
                 {
                     logger.LogInformation("User logged in.");
@@ -103,7 +110,10 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage(
+                        "./LoginWith2fa",
+                        new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe }
+                    );
                 }
                 if (result.IsLockedOut)
                 {

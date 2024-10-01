@@ -10,5 +10,4 @@ public class UserNameComponent(ApplicationDbContext applicationDbContext) : View
         var roleNames = applicationDbContext.Roles.Select(r => r.Name).ToList();
         return View(roleNames);
     }
-    
 }

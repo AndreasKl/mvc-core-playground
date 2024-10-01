@@ -4,5 +4,5 @@ namespace HelloMVCCore.Data;
 
 public class ApplicationUser : IdentityUser
 {
-    public string Language { get; set; }   
+    public string Language { get; set; }
 }

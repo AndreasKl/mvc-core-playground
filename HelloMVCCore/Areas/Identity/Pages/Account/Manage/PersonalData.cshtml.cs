@@ -7,8 +7,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel(
         UserManager<ApplicationUser> userManager,
-        ILogger<PersonalDataModel> logger)
-        : PageModel
+        ILogger<PersonalDataModel> logger
+    ) : PageModel
     {
         private readonly ILogger<PersonalDataModel> _logger = logger;
 

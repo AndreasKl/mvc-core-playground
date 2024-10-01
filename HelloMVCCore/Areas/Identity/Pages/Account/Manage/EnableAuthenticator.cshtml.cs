@@ -14,10 +14,11 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
     public class EnableAuthenticatorModel(
         UserManager<ApplicationUser> userManager,
         ILogger<EnableAuthenticatorModel> logger,
-        UrlEncoder urlEncoder)
-        : PageModel
+        UrlEncoder urlEncoder
+    ) : PageModel
     {
-        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+        private const string AuthenticatorUriFormat =
+            "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -63,7 +64,11 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(
+                7,
+                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6
+            )]
             [DataType(DataType.Text)]
             [Display(Name = "Verification Code")]
             public string Code { get; set; }
@@ -100,7 +105,10 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var is2faTokenValid = await userManager.VerifyTwoFactorTokenAsync(
-                user, userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+                user,
+                userManager.Options.Tokens.AuthenticatorTokenProvider,
+                verificationCode
+            );
 
             if (!is2faTokenValid)
             {
@@ -111,13 +119,19 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 
             await userManager.SetTwoFactorEnabledAsync(user, true);
             var userId = await userManager.GetUserIdAsync(user);
-            logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
+            logger.LogInformation(
+                "User with ID '{UserId}' has enabled 2FA with an authenticator app.",
+                userId
+            );
 
             StatusMessage = "Your authenticator app has been verified.";
 
             if (await userManager.CountRecoveryCodesAsync(user) == 0)
             {
-                var recoveryCodes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                var recoveryCodes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(
+                    user,
+                    10
+                );
                 RecoveryCodes = recoveryCodes.ToArray();
                 return RedirectToPage("./ShowRecoveryCodes");
             }
@@ -165,7 +179,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
                 AuthenticatorUriFormat,
                 urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
                 urlEncoder.Encode(email),
-                unformattedKey);
+                unformattedKey
+            );
         }
     }
 }

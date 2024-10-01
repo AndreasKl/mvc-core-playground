@@ -10,8 +10,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel(
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
-        : PageModel
+        SignInManager<ApplicationUser> signInManager
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -55,10 +55,7 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
 
-            Input = new InputModel
-            {
-                PhoneNumber = phoneNumber
-            };
+            Input = new InputModel { PhoneNumber = phoneNumber };
         }
 
         public async Task<IActionResult> OnGetAsync()

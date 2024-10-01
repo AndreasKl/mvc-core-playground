@@ -12,8 +12,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel(
         UserManager<ApplicationUser> userManager,
-        ILogger<DownloadPersonalDataModel> logger)
-        : PageModel
+        ILogger<DownloadPersonalDataModel> logger
+    ) : PageModel
     {
         public IActionResult OnGet()
         {
@@ -28,12 +28,16 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
-            logger.LogInformation("User with ID '{UserId}' asked for their personal data.", userManager.GetUserId(User));
+            logger.LogInformation(
+                "User with ID '{UserId}' asked for their personal data.",
+                userManager.GetUserId(User)
+            );
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(IdentityUser).GetProperties().Where(
-                            prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+            var personalDataProps = typeof(IdentityUser)
+                .GetProperties()
+                .Where(prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {
                 personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
@@ -45,10 +49,19 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
                 personalData.Add($"{l.LoginProvider} external login provider key", l.ProviderKey);
             }
 
-            personalData.Add($"Authenticator Key", await userManager.GetAuthenticatorKeyAsync(user));
+            personalData.Add(
+                $"Authenticator Key",
+                await userManager.GetAuthenticatorKeyAsync(user)
+            );
 
-            Response.Headers.TryAdd("Content-Disposition", "attachment; filename=PersonalData.json");
-            return new FileContentResult(JsonSerializer.SerializeToUtf8Bytes(personalData), "application/json");
+            Response.Headers.TryAdd(
+                "Content-Disposition",
+                "attachment; filename=PersonalData.json"
+            );
+            return new FileContentResult(
+                JsonSerializer.SerializeToUtf8Bytes(personalData),
+                "application/json"
+            );
         }
     }
 }

@@ -11,8 +11,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
     public class LoginWith2faModel(
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
-        ILogger<LoginWith2faModel> logger)
-        : PageModel
+        ILogger<LoginWith2faModel> logger
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -44,7 +44,11 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(
+                7,
+                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6
+            )]
             [DataType(DataType.Text)]
             [Display(Name = "Authenticator code")]
             public string TwoFactorCode { get; set; }
@@ -64,7 +68,9 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
 
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException(
+                    $"Unable to load two-factor authentication user."
+                );
             }
 
             ReturnUrl = returnUrl;
@@ -85,12 +91,20 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
             var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException(
+                    $"Unable to load two-factor authentication user."
+                );
             }
 
-            var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+            var authenticatorCode = Input
+                .TwoFactorCode.Replace(" ", string.Empty)
+                .Replace("-", string.Empty);
 
-            var result = await signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
+            var result = await signInManager.TwoFactorAuthenticatorSignInAsync(
+                authenticatorCode,
+                rememberMe,
+                Input.RememberMachine
+            );
 
             var userId = await userManager.GetUserIdAsync(user);
 
@@ -105,7 +119,10 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                 logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
                 return RedirectToPage("./Lockout");
             }
-            logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
+            logger.LogWarning(
+                "Invalid authenticator code entered for user with ID '{UserId}'.",
+                user.Id
+            );
             ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
             return Page();
         }

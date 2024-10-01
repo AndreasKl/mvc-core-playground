@@ -10,13 +10,14 @@ public class AjaxAnchorTagHelper(ILogger<AjaxAnchorTagHelper> logger) : TagHelpe
 
     [HtmlAttributeName("label")]
     public string? Label { get; set; }
-    
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         logger.LogInformation("DI DI?");
-        
-        var childContent = output.Content.IsModified ? output.Content.GetContent() :
-            (await output.GetChildContentAsync()).GetContent();
+
+        var childContent = output.Content.IsModified
+            ? output.Content.GetContent()
+            : (await output.GetChildContentAsync()).GetContent();
         output.TagMode = TagMode.StartTagAndEndTag;
         output.TagName = null;
 
@@ -27,7 +28,7 @@ public class AjaxAnchorTagHelper(ILogger<AjaxAnchorTagHelper> logger) : TagHelpe
         span.InnerHtml.Append(Label ?? "Please provide a label!");
         tagBuilder.InnerHtml.AppendHtml(span);
         tagBuilder.InnerHtml.AppendHtml(childContent);
-        
+
         output.Content.AppendHtml(tagBuilder);
     }
 }

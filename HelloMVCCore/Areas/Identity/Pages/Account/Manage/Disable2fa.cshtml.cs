@@ -9,8 +9,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 {
     public class Disable2faModel(
         UserManager<ApplicationUser> userManager,
-        ILogger<Disable2faModel> logger)
-        : PageModel
+        ILogger<Disable2faModel> logger
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -29,7 +29,9 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 
             if (!await userManager.GetTwoFactorEnabledAsync(user))
             {
-                throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.");
+                throw new InvalidOperationException(
+                    $"Cannot disable 2FA for user as it's not currently enabled."
+                );
             }
 
             return Page();
@@ -49,8 +51,12 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred disabling 2FA.");
             }
 
-            logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", userManager.GetUserId(User));
-            StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+            logger.LogInformation(
+                "User with ID '{UserId}' has disabled 2fa.",
+                userManager.GetUserId(User)
+            );
+            StatusMessage =
+                "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
             return RedirectToPage("./TwoFactorAuthentication");
         }
     }

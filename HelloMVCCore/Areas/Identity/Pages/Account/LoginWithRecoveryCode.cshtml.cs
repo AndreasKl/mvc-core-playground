@@ -11,8 +11,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
     public class LoginWithRecoveryCodeModel(
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
-        ILogger<LoginWithRecoveryCodeModel> logger)
-        : PageModel
+        ILogger<LoginWithRecoveryCodeModel> logger
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -50,7 +50,9 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
             var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException(
+                    $"Unable to load two-factor authentication user."
+                );
             }
 
             ReturnUrl = returnUrl;
@@ -68,7 +70,9 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
             var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException(
+                    $"Unable to load two-factor authentication user."
+                );
             }
 
             var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
@@ -79,7 +83,10 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
+                logger.LogInformation(
+                    "User with ID '{UserId}' logged in with a recovery code.",
+                    user.Id
+                );
                 return LocalRedirect(returnUrl ?? Url.Content("~/"));
             }
             if (result.IsLockedOut)
@@ -88,7 +95,10 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                 return RedirectToPage("./Lockout");
             }
 
-            logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
+            logger.LogWarning(
+                "Invalid recovery code entered for user with ID '{UserId}' ",
+                user.Id
+            );
             ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
             return Page();
         }

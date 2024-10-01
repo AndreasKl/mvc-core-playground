@@ -41,7 +41,12 @@ public class NotesController(NotesContext notesContext) : Controller
         }
 
         await notesContext.Notes.AddAsync(
-            new Note { Description = form.Description!, Title = form.Title!, TypeID = form.NoteTypeID!.Value }
+            new Note
+            {
+                Description = form.Description!,
+                Title = form.Title!,
+                TypeID = form.NoteTypeID!.Value
+            }
         );
         await notesContext.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

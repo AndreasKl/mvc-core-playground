@@ -21,7 +21,8 @@ namespace Notes.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NoteTypes", x => x.ID);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Notes",
@@ -40,23 +41,20 @@ namespace Notes.Migrations
                         column: x => x.TypeID,
                         principalTable: "NoteTypes",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Notes_TypeID",
-                table: "Notes",
-                column: "TypeID");
+            migrationBuilder.CreateIndex(name: "IX_Notes_TypeID", table: "Notes", column: "TypeID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Notes");
+            migrationBuilder.DropTable(name: "Notes");
 
-            migrationBuilder.DropTable(
-                name: "NoteTypes");
+            migrationBuilder.DropTable(name: "NoteTypes");
         }
     }
 }

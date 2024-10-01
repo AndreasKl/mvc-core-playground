@@ -11,8 +11,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
     public class ExternalLoginsModel(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IUserStore<ApplicationUser> userStore)
-        : PageModel
+        IUserStore<ApplicationUser> userStore
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -55,14 +55,20 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
             string passwordHash = null;
             if (userStore is IUserPasswordStore<IdentityUser> userPasswordStore)
             {
-                passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
+                passwordHash = await userPasswordStore.GetPasswordHashAsync(
+                    user,
+                    HttpContext.RequestAborted
+                );
             }
 
             ShowRemoveButton = passwordHash != null || CurrentLogins.Count > 1;
             return Page();
         }
 
-        public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
+        public async Task<IActionResult> OnPostRemoveLoginAsync(
+            string loginProvider,
+            string providerKey
+        )
         {
             var user = await userManager.GetUserAsync(User);
             if (user == null)
@@ -89,9 +95,11 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
 
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Page("./ExternalLogins", pageHandler: "LinkLoginCallback");
-            var properties =
-                signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
-                    userManager.GetUserId(User));
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(
+                provider,
+                redirectUrl,
+                userManager.GetUserId(User)
+            );
             return new ChallengeResult(provider, properties);
         }
 
@@ -107,7 +115,9 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
             var info = await signInManager.GetExternalLoginInfoAsync(userId);
             if (info == null)
             {
-                throw new InvalidOperationException($"Unexpected error occurred loading external login info.");
+                throw new InvalidOperationException(
+                    $"Unexpected error occurred loading external login info."
+                );
             }
 
             var result = await userManager.AddLoginAsync(user, info);

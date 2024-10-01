@@ -12,8 +12,10 @@ using Microsoft.AspNetCore.WebUtilities;
 namespace HelloMVCCore.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender sender)
-        : PageModel
+    public class RegisterConfirmationModel(
+        UserManager<ApplicationUser> userManager,
+        IEmailSender sender
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -58,8 +60,15 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: Request.Scheme);
+                    values: new
+                    {
+                        area = "Identity",
+                        userId = userId,
+                        code = code,
+                        returnUrl = returnUrl
+                    },
+                    protocol: Request.Scheme
+                );
             }
 
             return Page();

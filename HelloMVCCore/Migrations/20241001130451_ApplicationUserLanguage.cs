@@ -15,15 +15,14 @@ namespace HelloMVCCore.Migrations
                 table: "AspNetUsers",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Language",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "Language", table: "AspNetUsers");
         }
     }
 }

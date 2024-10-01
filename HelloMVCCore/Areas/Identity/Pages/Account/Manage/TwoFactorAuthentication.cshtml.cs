@@ -10,8 +10,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
     public class TwoFactorAuthenticationModel(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        ILogger<TwoFactorAuthenticationModel> logger)
-        : PageModel
+        ILogger<TwoFactorAuthenticationModel> logger
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -70,7 +70,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
             }
 
             await signInManager.ForgetTwoFactorClientAsync();
-            StatusMessage = "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
+            StatusMessage =
+                "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
             return RedirectToPage();
         }
     }

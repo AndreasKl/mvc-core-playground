@@ -11,8 +11,8 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
     public class DeletePersonalDataModel(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        ILogger<DeletePersonalDataModel> logger)
-        : PageModel
+        ILogger<DeletePersonalDataModel> logger
+    ) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
