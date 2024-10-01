@@ -112,7 +112,7 @@ public static class Program
         using (var scope = app.Services.CreateScope())
         {
             // Role management...
-            var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>()!;
             if (!roleManager.Roles.Any())
             {
                 await roleManager.CreateAsync(new IdentityRole("Admin"));
