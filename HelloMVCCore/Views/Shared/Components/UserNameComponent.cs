@@ -1,7 +1,5 @@
 using HelloMVCCore.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HelloMVCCore.Views.Shared.Components;
 

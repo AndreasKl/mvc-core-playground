@@ -2,6 +2,11 @@
 <p class="alert alert-info">
     @foreach (var role in Model)
     {
-        <span>@role</span>
+        if (Model.LastOrDefault() == role)
+        {
+            <span>@role</span>    
+            return;
+        }
+        <span>@role</span><span> | </span>
     }
 </p>
