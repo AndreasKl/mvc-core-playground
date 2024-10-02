@@ -22,7 +22,7 @@ public class HomeController : Controller
     {
         return View(new SampleViewModel(FirstName: "Andreas", LastName: "Kluth"));
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> SetThing(int thingID, string thingRole)
     {
@@ -39,7 +39,7 @@ public class HomeController : Controller
         {
             return BadRequest();
         }
-        
+
         return RedirectToAction("Index");
     }
 

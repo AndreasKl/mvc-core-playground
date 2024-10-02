@@ -116,7 +116,6 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                         user.CurrentThingID = null;
                         await userManager.UpdateAsync(user);
                     }
-                    
 
                     return LocalRedirect(returnUrl);
                 }

@@ -16,32 +16,31 @@ namespace HelloMVCCore.Migrations
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AddColumn<int>(
                 name: "CurrentThingID",
                 table: "AspNetUsers",
                 type: "INTEGER",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "CurrentThingRole",
                 table: "AspNetUsers",
                 type: "TEXT",
                 maxLength: 200,
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "CurrentThingID",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "CurrentThingID", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "CurrentThingRole",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "CurrentThingRole", table: "AspNetUsers");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Language",
@@ -51,7 +50,8 @@ namespace HelloMVCCore.Migrations
                 defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
     }
 }

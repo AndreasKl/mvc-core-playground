@@ -118,7 +118,7 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                     currentUser.CurrentThingID = null;
                     await userManager.UpdateAsync(currentUser);
                 }
-                
+
                 logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
                 return LocalRedirect(returnUrl);
             }

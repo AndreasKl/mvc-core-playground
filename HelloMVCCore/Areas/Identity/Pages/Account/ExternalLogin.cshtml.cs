@@ -134,7 +134,7 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                     currentUser.CurrentThingID = null;
                     await _userManager.UpdateAsync(currentUser);
                 }
-                
+
                 _logger.LogInformation(
                     "{Name} logged in with {LoginProvider} provider.",
                     info.Principal.Identity?.Name,
