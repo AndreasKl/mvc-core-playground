@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace HelloMVCCore.Areas.Identity.Pages.Account
 {
     public class LoginModel(
+        UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ILogger<LoginModel> logger
     ) : PageModel
@@ -106,6 +107,17 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     logger.LogInformation("User logged in.");
+
+                    // Reset selected thing on login
+                    var user = await userManager.GetUserAsync(User);
+                    if (user != null)
+                    {
+                        user.CurrentThingRole = null;
+                        user.CurrentThingID = null;
+                        await userManager.UpdateAsync(user);
+                    }
+                    
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

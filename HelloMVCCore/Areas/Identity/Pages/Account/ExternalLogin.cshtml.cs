@@ -126,9 +126,18 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
             );
             if (result.Succeeded)
             {
+                // Reset selected thing on login
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser != null)
+                {
+                    currentUser.CurrentThingRole = null;
+                    currentUser.CurrentThingID = null;
+                    await _userManager.UpdateAsync(currentUser);
+                }
+                
                 _logger.LogInformation(
                     "{Name} logged in with {LoginProvider} provider.",
-                    info.Principal.Identity.Name,
+                    info.Principal.Identity?.Name,
                     info.LoginProvider
                 );
                 return LocalRedirect(returnUrl);

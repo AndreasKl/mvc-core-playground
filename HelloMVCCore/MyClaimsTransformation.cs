@@ -17,12 +17,22 @@ public class TestClaimsTransformation(UserManager<ApplicationUser> userManager)
         }
 
         var claimsIdentity = new ClaimsIdentity();
-        if (!principal.HasClaim(claim => claim.Type == "language"))
-        {
-            claimsIdentity.AddClaim(new Claim("language", user.Language));
-        }
+        AddClaimIfNotPresent(principal, claimsIdentity, "language", user.Language);
+        AddClaimIfNotPresent(principal, claimsIdentity, "currentThingID", user.CurrentThingID?.ToString());
+        AddClaimIfNotPresent(principal, claimsIdentity, "currentThingRole", user.CurrentThingRole);
 
         principal.AddIdentity(claimsIdentity);
         return principal;
+    }
+
+    private static void AddClaimIfNotPresent(ClaimsPrincipal currentPrincipal, ClaimsIdentity newClaimsIdentity, string claimType,
+        string? value)
+    {
+        if (value == null) return;
+        if (!currentPrincipal.HasClaim(claim => claim.Type == claimType))
+        {
+
+            newClaimsIdentity.AddClaim(new Claim(claimType, value?.ToString() ?? string.Empty));
+        }
     }
 }

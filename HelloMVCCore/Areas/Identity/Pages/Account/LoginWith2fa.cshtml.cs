@@ -110,6 +110,15 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
+                // Reset selected thing on login
+                var currentUser = await userManager.GetUserAsync(User);
+                if (currentUser != null)
+                {
+                    currentUser.CurrentThingRole = null;
+                    currentUser.CurrentThingID = null;
+                    await userManager.UpdateAsync(currentUser);
+                }
+                
                 logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
                 return LocalRedirect(returnUrl);
             }
