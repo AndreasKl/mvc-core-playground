@@ -22,7 +22,7 @@
     @foreach (var thing in things)
     {
         <div class="col-sm-4 mt-5">
-            <div class="card">
+            <div class="card border-dark">
                 <div class="card-body">
                     <form asp-action="SetThing" method="post">
                         <input type="hidden" name="thingID" value="@thing.ID"/>
