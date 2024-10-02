@@ -53,7 +53,7 @@ namespace HelloMVCCore.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (userStore is IUserPasswordStore<IdentityUser> userPasswordStore)
+            if (userStore is IUserPasswordStore<ApplicationUser> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(
                     user,
