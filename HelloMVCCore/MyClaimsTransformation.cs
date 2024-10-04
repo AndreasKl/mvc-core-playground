@@ -41,7 +41,7 @@ public class TestClaimsTransformation(UserManager<ApplicationUser> userManager)
             return;
         if (!currentPrincipal.HasClaim(claim => claim.Type == claimType))
         {
-            newClaimsIdentity.AddClaim(new Claim(claimType, value?.ToString() ?? string.Empty));
+            newClaimsIdentity.AddClaim(new Claim(claimType, value ?? string.Empty));
         }
     }
 }

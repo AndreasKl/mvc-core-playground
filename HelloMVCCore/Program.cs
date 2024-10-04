@@ -25,7 +25,6 @@ public static class Program
         var services = builder.Services;
 
         services.AddTransient<IClaimsTransformation, TestClaimsTransformation>();
-
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
         services.AddDatabaseDeveloperPageExceptionFilter();
@@ -51,8 +50,7 @@ public static class Program
                 o.User.RequireUniqueEmail = true;
             })
             .AddRoles<IdentityRole>()
-            // Add obviously the default UI, removed the whole dependency...
-            //.AddDefaultUI()
+            .AddClaimsPrincipalFactory<MyCustomClaimsFactory>()
             .AddSignInManager()
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -87,7 +85,7 @@ public static class Program
         {
             options.LoginPath = "/Identity/Account/Login";
             options.LogoutPath = "/Identity/Account/Logout";
-            options.AccessDeniedPath = "/identity/account/AccessDenied";
+            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
         });
 
         // Just a noop sample...
@@ -108,8 +106,7 @@ public static class Program
                 .AddSupportedCultures(supportedCultures)
                 .AddSupportedUICultures(supportedCultures);
 
-            options.RequestCultureProviders.Insert(
-                0,
+            options.AddInitialRequestCultureProvider(
                 new CustomRequestCultureProvider(async context =>
                 {
                     var userManager = context.RequestServices.GetService<
@@ -141,8 +138,6 @@ public static class Program
             .AddViewLocalization();
         services.AddRazorPages(options =>
         {
-            // Check if we need sth from:
-            // Microsoft.AspNetCore.Identity.UI.IdentityDefaultUIConfigureOptions[TUser].PostConfigure
             options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
             options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
         });
